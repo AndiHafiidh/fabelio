@@ -20,7 +20,7 @@ class Make extends API_Controller {
         echo json_encode($arr);
     }
 
-    public function migrate($version = '20180909190921'){
+    public function migrate($version = '20200313172027'){
         $migration = $this->migration->version($version);
         if (!$migration) {
             echo $this->migration->error_string();
