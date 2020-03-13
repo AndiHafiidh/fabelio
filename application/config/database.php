@@ -74,12 +74,13 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => '',
-	'password' => '',
-	'database' => '',
-	'dbdriver' => 'mysqli',
+	'dsn' => '',
+	'hostname' => 'ec2-18-215-99-63.compute-1.amazonaws.com',
+	'port' => '5432',
+	'username' => 'kzjfstoexrzkdm',
+	'password' => 'b1c6a0a363667de1441d89bdcfdecaa831457fa216e26349b755ddfbac8f371d',
+	'database' => 'd237v5le8t1p23',
+	'dbdriver' => 'postgre',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
