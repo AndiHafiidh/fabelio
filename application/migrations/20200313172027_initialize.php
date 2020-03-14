@@ -34,9 +34,7 @@ class Migration_Initialize extends CI_Migration {
 	{
 		$this->dbforge->add_field(array(
 			'id' => array(
-				'type' => 'VARCHAR',								
-				'constraint' => '36',
-				'unique' => TRUE,
+				'type' => 'SERIAL',
 				'null' => FALSE
 			),
 			'name' => array(
@@ -71,7 +69,7 @@ class Migration_Initialize extends CI_Migration {
 		$this->dbforge->create_table(__FUNCTION__, TRUE);	
 
 		$objects = array(
-			(object)[
+			(object)[				
 				"name" => "application",					
 				"api_key" => "6Vlo7xk4Ih0tOD6zD4IgUjO07MxXJ8"
 			]
@@ -137,16 +135,13 @@ class Migration_Initialize extends CI_Migration {
 				'type' => 'SERIAL',		
 				'null' => FALSE
 			),
-			'product_id' => array(
-				'type' => 'SERIAL',
-				'null' => FALSE
-			),
+			'product_id INTEGER REFERENCES product(id)',
 			'price' => array(
-				'type' => 'DOUBLE',                
+				'type' => 'NUMERIC',                
 				'null' => FALSE
 			),
 			'sale_price' => array(
-				'type' => 'DOUBLE',
+				'type' => 'NUMERIC',
 				'null' => FALSE
 			),				
 			'created_at TIMESTAMP NOT NULL DEFAULT NOW()',
@@ -154,9 +149,7 @@ class Migration_Initialize extends CI_Migration {
 			'deleted_at' => array(
 				'type' => 'TIMESTAMP',				
 				'null' => TRUE
-			),
-			'CONSTRAINT `fk_price_product` FOREIGN KEY (product_id) REFERENCES product(id)'			
-
+			)
 		));
 
 		$this->dbforge->add_key('id', TRUE);			
@@ -176,15 +169,12 @@ class Migration_Initialize extends CI_Migration {
 				'type' => 'SERIAL',		
 				'null' => FALSE
 			),
-			'product_id' => array(
-				'type' => 'SERIAL',
-				'null' => FALSE
-			),
+			'product_id INTEGER NOT NULL REFERENCES product(id)',
 			'thumbnail' => array(
 				'type' => 'TEXT',                
 				'null' => FALSE
 			),
-			'img' => array(
+			'image' => array(
 				'type' => 'TEXT',
 				'null' => FALSE
 			),				
@@ -206,9 +196,7 @@ class Migration_Initialize extends CI_Migration {
 			'deleted_at' => array(
 				'type' => 'TIMESTAMP',				
 				'null' => TRUE
-			),
-			'CONSTRAINT `fk_galery_product` FOREIGN KEY (product_id) REFERENCES product(id)'			
-
+			)
 		));
 
 		$this->dbforge->add_key('id', TRUE);			
