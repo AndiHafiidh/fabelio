@@ -220,7 +220,7 @@ class API_Controller extends CI_Controller {
 	protected function create_url($string)
 	{
 	   	$string = str_replace(' ', '-', $string); // Replaces spaces with hyphens.
-   		return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+   		return strtolower(preg_replace('/[^A-Za-z0-9\-]/', '', $string)); // Removes special chars.
 	}
 
 }
