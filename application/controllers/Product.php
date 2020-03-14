@@ -158,6 +158,94 @@ class Product extends API_controller {
 		
 		$this->get_response(true, false);       
 	}
+
+	public function update($id = null)
+	{
+		$step = 2; // check allowed access        
+        if(in_array(__FUNCTION__, $this->allowed)){		
+			$step = 3; // interval time check	
+			
+			$data = $this->model->query("SELECT * FROM v_product WHERE status = 1 AND deleted_at IS NULL AND CURRENT_TIMESTAMP - updated_at > INTERVAL '1 HOURS' ORDER BY updated_at ASC LIMIT 1");
+			if($data){
+
+				$goutte = new Client();
+				$guzzle = new GuzzleClient();
+				$guzzleClient = new GuzzleClient(array(
+					'timeout' => 60,
+				));
+
+				$goutte->setClient($guzzleClient);			
+
+				foreach ($data as $found) {					
+					$step = 6; // get product data (part 1)
+					$crawler = $goutte->request('GET', $found->url);			
+					$fullbody = $guzzle->request('GET', $found->url);
+
+					$id = $crawler->filter('input#productId')->eq(0)->attr('value');				
+					$description = $crawler->filter('div.product-info__description')->eq(0)->text();			
+
+					$additional_data = $crawler->filter('div#additional-data')->eq(0)->html();	
+					
+					$html =  preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', (string) $fullbody->getBody()->getContents());			
+					preg_match_all('/"data": \[(.*?)\]/m', $html, $galery, PREG_SET_ORDER, 0);
+					$galery = json_decode('{'.$galery[0][0].'}');				
+					
+					$data = $guzzle->request('GET', $this->API_URL.$id);
+					$product = json_decode($data->getBody()->getContents());
+					$now = Carbon::now(); 
+
+					$update_product = (object)[
+						"product_id" => $id,					
+						"name" => $product->product->name,
+						"description" => $description,
+						"detail" => $additional_data,	
+						"url" => $product->product->url,
+						"image" => $product->product->product_image_url,
+						"updated_at" => $now->format('Y-m-d H:i:s')				
+					];
+
+					$saved_product = clone($this->model->update('product', $update_product, "id = $found->id"));
+					
+					$new_price = (object)[
+						'product_id' => $found->id,
+						'price' => $product->product->unit_price,
+						'sale_price' => $product->product->unit_sale_price
+					];					
+					$saved_price = clone($this->model->insert("price", $new_price));					
+
+					$deleted_galery = clone($this->model->delete("galery", "product_id = $found->id"));
+					
+					$new_galery = array();
+					foreach ($galery->data as $data) {
+						$new = (object)[
+							'product_id' => $found->id,
+							'thumbnail' => $data->thumb,
+							'image' => $data->img,				
+							'full' => $data->full,	
+							'caption' => $data->caption,
+							'order' => $data->position
+						];		
+						$new_galery[] = $new;	
+					}
+					$saved_galery = clone($this->model->insert('galery', $new_galery));
+				}
+				
+				$params = (object) [
+					"title" => "Update data success",
+					"status" => 200,
+					"message" => "Data successfully updated"					
+				];
+
+				$this->response = $this->res->initialize($params);
+			}else{
+				$this->response = $this->model->error(404, "Data Not Found" , "No data need to update", __CLASS__ . '-' . __FUNCTION__, $step);
+			}
+		}else{
+            $this->response = $this->model->error(401, "Authentication failed" , "Maaf terjadi kesalahan, silahkan coba beberapa saat lagi", __CLASS__ . '-' . __FUNCTION__, $step);
+		}
+		
+		$this->get_response(true, false);       
+	}
 }
 
 /* End of file Product.php */
