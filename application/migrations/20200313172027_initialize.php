@@ -8,7 +8,8 @@ class Migration_Initialize extends CI_Migration {
 			'system_key',
 			'product',
 			'price',
-			'galery'
+			'galery',
+			'v_product'
 		);
 
 		foreach ($tables as $table) {
@@ -19,6 +20,7 @@ class Migration_Initialize extends CI_Migration {
 	public function down()
 	{
 		$tables = array(			
+			'v_product',
 			'system_key',
 			'galery',
 			'price',
@@ -84,7 +86,11 @@ class Migration_Initialize extends CI_Migration {
 			'id' => array(
 				'type' => 'SERIAL',		
 				'null' => FALSE
-			),			
+			),		
+			'product_id' => array(
+				'type' => 'INTEGER',		
+				'null' => FALSE
+			),				
 			'name' => array(
 				'type' => 'VARCHAR',
                 'constraint' => '255',
@@ -120,6 +126,7 @@ class Migration_Initialize extends CI_Migration {
 		));
 
 		$this->dbforge->add_key('id', TRUE);			
+		$this->dbforge->add_key('product_id');			
 		$this->dbforge->add_key('name');		
 		$this->dbforge->add_key('status');		
 		$this->dbforge->add_key('created_at');		
@@ -207,6 +214,41 @@ class Migration_Initialize extends CI_Migration {
 		$this->dbforge->add_key('updated_at');			
 		$this->dbforge->add_key('deleted_at');		
 		$this->dbforge->create_table(__FUNCTION__, TRUE);		
+	}
+
+	private function v_product()
+	{
+		$name = __FUNCTION__;
+        $this->db->query("CREATE VIEW $name AS
+            SELECT 
+				p.id,
+				p.product_id,
+				p.name,
+				p.description,
+				p.detail,
+				p.url,
+				p.image,
+				(
+					SELECT 
+						p2.price
+					FROM price p2
+					WHERE p2.product_id = p.id
+					ORDER BY created_at DESC
+					LIMIT 1
+				) AS price,
+				(
+					SELECT 
+						p2.sale_price
+					FROM price p2
+					WHERE p2.product_id = p.id
+					ORDER BY created_at DESC
+					LIMIT 1
+				) AS sale_price,	
+				p.status,
+				p.created_at,
+				p.updated_at,
+				p.deleted_at
+			FROM product p");		
 	}
 }
 
