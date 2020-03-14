@@ -58,12 +58,12 @@ class API_Model extends CI_Model {
 		if (is_array($object)) {
 			foreach ($object as $item) {
 				$this->$db->insert($table, $item);			
-				$insert_id[] = $this->db->insert_id();	
+				$insert_id[] = $this->db->insert_id($table.'_id_seq');	
 				$affected_rows += $this->$db->affected_rows();
 			}			
 		}else{
 			$this->$db->insert($table, $object);			
-			$insert_id[] = $this->db->insert_id();
+			$insert_id[] = $this->db->insert_id($table.'_id_seq');
 			$affected_rows += $this->$db->affected_rows();
 		}
 
@@ -234,8 +234,8 @@ class API_Model extends CI_Model {
 			"info" => (object)[
 				"pagination" => $pagination,
 				"data" => $data
-			]
-			// "meta" => $this->$db->last_query()
+			],
+			"meta" => $this->$db->last_query()
 		];
 
 		return $this->res->initialize($params);		
