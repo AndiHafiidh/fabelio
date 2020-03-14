@@ -58,12 +58,12 @@ class API_Model extends CI_Model {
 		if (is_array($object)) {
 			foreach ($object as $item) {
 				$this->$db->insert($table, $item);			
-				$insert_id[] = $item->id;		
+				$insert_id[] = $this->db->insert_id();	
 				$affected_rows += $this->$db->affected_rows();
 			}			
 		}else{
 			$this->$db->insert($table, $object);			
-			$insert_id[] = $object->id;
+			$insert_id[] = $this->db->insert_id();
 			$affected_rows += $this->$db->affected_rows();
 		}
 
