@@ -172,9 +172,11 @@ class API_Controller extends CI_Controller {
 
 	private function setup_response(){
 		header_remove();
-		http_response_code($this->response->status->code);
 		header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
-
+		header('Content-Type: application/json');	
+		header('Access-Control-Allow-Origin: *');
+		header("Access-Control-Allow-Headers: Origin, X-Api-Key, X-App-Key, X-App-Secret, Content-Type, Accept, Access-Control-Request-Method, Authorization");
+		header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 
 		$status = array(
 			200 => '200 OK',
@@ -185,16 +187,14 @@ class API_Controller extends CI_Controller {
 			500 => '500 Internal Server Error'
 		);
 
-    	// ok, validation error, or failure
-		header('Status: '.$status[$this->response->status->code]);	
-		
-		header('Content-Type: application/json');	
-		header('Access-Control-Allow-Origin: *');
-		header("Access-Control-Allow-Headers: X-Api-Key, X-App-Key, X-App-Secret, Origin, Content-Type, Accept, Access-Control-Request-Method");
-		header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 		$method = $_SERVER['REQUEST_METHOD'];
 		if($method == "OPTIONS") {
-			die();
+			http_response_code(200);			
+			header('Status: '.$status[200]);	
+			die();			
+		}else{
+			http_response_code($this->response->status->code);		
+			header('Status: '.$status[$this->response->status->code]);					
 		}
 	}
 
