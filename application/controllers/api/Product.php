@@ -74,7 +74,7 @@ class Product extends API_controller {
 					"status" => 200,
 					"message" => "Product has been registered before!",
 					"data" => array(
-						APP_URL.'/product/'.$product->id.'/'.$this->create_url($product->name).'.html'
+						base_url('/product/'.$product->id.'/'.$this->create_url($product->name))
 					)							
 				];
 				$this->response = $this->res->initialize($params);
@@ -138,7 +138,7 @@ class Product extends API_controller {
 							"status" => 200,
 							"message" => "Data successfully added",
 							"data" => array(
-								APP_URL.'/product/'.$id.'/'.$this->create_url($product->product->name).'.html'
+								base_url('/product/'.$product->id.'/'.$this->create_url($product->name))
 							)							
 						];
 						$this->response = $this->res->initialize($params);
