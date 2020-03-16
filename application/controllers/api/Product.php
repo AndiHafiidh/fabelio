@@ -12,7 +12,7 @@ class Product extends API_controller {
 	public function __construct()
 	{
 		parent::__construct();		
-		$this->allowed = ['create', 'read', 'update'];
+		$this->allowed = ['create', 'read', 'update', 'galery', 'price'];
 
 		$step = 1; // api key check
 		$key = $this->key_check($this->header['X-Api-Key']);
@@ -74,7 +74,7 @@ class Product extends API_controller {
 					"status" => 200,
 					"message" => "Product has been registered before!",
 					"data" => array(
-						APP_URL.'/product/'.$product->id.'/'.$this->create_url($product->name).'.html'
+						base_url('/product/'.$product->id.'/'.$this->create_url($product->name))
 					)							
 				];
 				$this->response = $this->res->initialize($params);
@@ -138,7 +138,7 @@ class Product extends API_controller {
 							"status" => 200,
 							"message" => "Data successfully added",
 							"data" => array(
-								APP_URL.'/product/'.$id.'/'.$this->create_url($product->product->name).'.html'
+								base_url('/product/'.$id.'/'.$this->create_url($product->product->name))
 							)							
 						];
 						$this->response = $this->res->initialize($params);
@@ -165,7 +165,7 @@ class Product extends API_controller {
         if(in_array(__FUNCTION__, $this->allowed)){		
 			$step = 3; // interval time check	
 			
-			$data = $this->model->query("SELECT * FROM v_product WHERE status = 1 AND deleted_at IS NULL AND CURRENT_TIMESTAMP - updated_at > INTERVAL '1 HOURS' ORDER BY updated_at ASC LIMIT 1");
+			$data = $this->model->query("SELECT * FROM v_product WHERE status = 1 AND deleted_at IS NULL AND CURRENT_TIMESTAMP - updated_at > INTERVAL '1 MINUTES' ORDER BY updated_at ASC LIMIT 1");
 			if($data){
 
 				$goutte = new Client();
@@ -240,6 +240,48 @@ class Product extends API_controller {
 			}else{
 				$this->response = $this->model->error(404, "Data Not Found" , "No data need to update", __CLASS__ . '-' . __FUNCTION__, $step);
 			}
+		}else{
+            $this->response = $this->model->error(401, "Authentication failed" , "Maaf terjadi kesalahan, silahkan coba beberapa saat lagi", __CLASS__ . '-' . __FUNCTION__, $step);
+		}
+		
+		$this->get_response(true, false);       
+	}
+
+	public function galery($product_id = null)
+	{
+		$step = 2; // check allowed access        
+        if(in_array(__FUNCTION__, $this->allowed)){
+			$step = 3;
+
+			if (empty($product_id)) {
+				$this->response = $this->model->error(400, "Require params not found", "Parameter product_id harus diisi", __CLASS__ . ' '. __FUNCTION__, $step);
+				$this->get_response(true);
+				exit;
+			}	
+
+			$this->response = clone($this->model->select('galery', '*', "product_id = $product_id AND deleted_at IS NULL"));
+			
+		}else{
+            $this->response = $this->model->error(401, "Authentication failed" , "Maaf terjadi kesalahan, silahkan coba beberapa saat lagi", __CLASS__ . '-' . __FUNCTION__, $step);
+		}
+		
+		$this->get_response(true, false);       
+	}
+
+	public function price($product_id = null)
+	{
+		$step = 2; // check allowed access        
+        if(in_array(__FUNCTION__, $this->allowed)){
+			$step = 3;
+
+			if (empty($product_id)) {
+				$this->response = $this->model->error(400, "Require params not found", "Parameter product_id harus diisi", __CLASS__ . ' '. __FUNCTION__, $step);
+				$this->get_response(true);
+				exit;
+			}	
+
+			$this->response = clone($this->model->select('price', '*', "product_id = $product_id AND deleted_at IS NULL", 0, 1, 'created_at ASC'));
+			
 		}else{
             $this->response = $this->model->error(401, "Authentication failed" , "Maaf terjadi kesalahan, silahkan coba beberapa saat lagi", __CLASS__ . '-' . __FUNCTION__, $step);
 		}
