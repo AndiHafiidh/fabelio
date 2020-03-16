@@ -9,16 +9,14 @@ Demo
 *******************
 
 For the result, you can visit at `Demo page
-<https://fabelio-test-andi.herokuapp.com/>`_ page.
+<https://fabelio-andi.herokuapp.com/>`_ page.
 
 **************************
 How to migrate the database
 **************************
 Migration file can be read at ./application/migrations
 
-https://api-fabelio-test-andi.herokuapp.com/api/make/migrate
-
-
+https://fabelio-andi.herokuapp.com/api/make/migrate
 
 *******************
 Updating product data
