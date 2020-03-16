@@ -12,8 +12,11 @@ class Product extends API_controller {
 	public function __construct()
 	{
 		parent::__construct();		
-		$this->allowed = ['create', 'read', 'update', 'galery', 'price'];
+		$this->allowed = ['create', 'read', 'update', 'galery', 'price'];		
+	}
 
+	public function create()
+	{
 		$step = 1; // api key check
 		$key = $this->key_check($this->header['X-Api-Key']);
 		if (empty($key) || $key->status->error) {				
@@ -21,10 +24,7 @@ class Product extends API_controller {
 			$this->get_response(true, false);
 			exit;
 		}
-	}
 
-	public function create()
-	{
 		$step = 2; // check allowed access        
         if(in_array(__FUNCTION__, $this->allowed)){		
 			$step = 3; // get input data	
@@ -160,12 +160,12 @@ class Product extends API_controller {
 	}
 
 	public function update($id = null)
-	{
+	{		
 		$step = 2; // check allowed access        
         if(in_array(__FUNCTION__, $this->allowed)){		
 			$step = 3; // interval time check	
 			
-			$data = $this->model->query("SELECT * FROM v_product WHERE status = 1 AND deleted_at IS NULL AND CURRENT_TIMESTAMP - updated_at > INTERVAL '1 MINUTES' ORDER BY updated_at ASC LIMIT 1");
+			$data = $this->model->query("SELECT * FROM v_product WHERE status = 1 AND deleted_at IS NULL AND CURRENT_TIMESTAMP - updated_at > INTERVAL '1 HOURS' ORDER BY updated_at ASC LIMIT 1");
 			if($data){
 
 				$goutte = new Client();
@@ -249,6 +249,14 @@ class Product extends API_controller {
 
 	public function galery($product_id = null)
 	{
+		$step = 1; // api key check
+		$key = $this->key_check($this->header['X-Api-Key']);
+		if (empty($key) || $key->status->error) {				
+			$this->response = $this->model->error(401, "Unauthorized application", "Application not valid", __CLASS__ . ' '. __FUNCTION__, $step);			
+			$this->get_response(true, false);
+			exit;
+		}
+		
 		$step = 2; // check allowed access        
         if(in_array(__FUNCTION__, $this->allowed)){
 			$step = 3;
@@ -270,6 +278,14 @@ class Product extends API_controller {
 
 	public function price($product_id = null)
 	{
+		$step = 1; // api key check
+		$key = $this->key_check($this->header['X-Api-Key']);
+		if (empty($key) || $key->status->error) {				
+			$this->response = $this->model->error(401, "Unauthorized application", "Application not valid", __CLASS__ . ' '. __FUNCTION__, $step);			
+			$this->get_response(true, false);
+			exit;
+		}
+		
 		$step = 2; // check allowed access        
         if(in_array(__FUNCTION__, $this->allowed)){
 			$step = 3;
