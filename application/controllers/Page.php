@@ -16,7 +16,7 @@ class Page extends CI_Controller {
     public function product($id = null, $title = null)
     {
         if ($id && $title) {
-            $this->layout('list', array('id' => $id, 'title' => $title));
+            $this->layout('detail', array('id' => $id, 'title' => $title));
         } else {            
             $this->layout('list');
         }        

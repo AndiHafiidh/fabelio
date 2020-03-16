@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600&display=swap');
+
+body{
+    font-family: 'Poppins', sans-serif;   
+    color: #616161;
+    background-color: #F9F9FA;
+}
+
+.text-primary{
+    color: #D11C5B;
+}
+.text-secondary{
+    color: #F6EED5;
+}
+.text-default{
+    color: #FAC600;
+}
+.text-dark{
+    color: #EA4B1D;
+}
+.text-light{
+    color: #ffffff;
+}
+
+.text-muted{
+    opacity: 0.5;
+}
+
+.text-bold{
+    font-weight: bold;
+}
+
+.background-primary{
+    color: #D11C5B;
+}
+.background-secondary{
+    color: #F6EED5;
+}
+.background-default{
+    color: #FAC600;
+}
+.background-dark{
+    color: #EA4B1D;
+}
+.background-light{
+    color: #ffffff;
+}
+
+.text-right{
+    text-align: right;
+}
+
+.text-left{
+    text-align: left;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.lastest-product{
+    width: 280px;
+}
+
+.lastest-product h5{
+    font-size: .8rem;
+    font-weight: bold;
+}
+
+.lastest-product p{
+    font-size: 0.75rem;
+    font-weight: 300;
+}
+
+.form-control{
+    font-size: 0.75rem;
+    height: calc(1.5rem + .75rem + 2px);
+    font-weight: 250;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {   
+  border-color: #FAC600;
+  box-shadow: none;
+  outline: 0 none;
+}
+
+.title, .product-title{
+    font-size: 0.75rem;
+    font-weight: 500;        
+    padding-bottom: 10px;
+}
+
+.subtitle, .product-description{
+    font-size: 0.75rem;
+    font-weight: 300;
+    opacity: 0.5;
+}
+
+a.subtitle{
+    text-decoration: none;
+}
+
+.btn-search, .btn-search:hover, .btn-search:active, .btn-search:focus{
+    width: 100%;
+    color: #ffffff;
+}
+
+.module .card-title, .module .card-text{	
+	width: 100%;	
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.module .product-name, .module .product-description{	
+	width: 100%;	
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.module .card-title{
+	height: 22px;	    
+}
+
+.module .product-name{
+	height: 22px;	    
+}
+
+.module .card-text{		
+	height: 38px;	    
+}
+
+.module .product-description{		
+	height: 42px;	    
+}
+
+.line-clamp.card-title, .line-clamp.card-text{
+	display: -webkit-box;	
+	-webkit-box-orient: vertical;  
+}
+
+.line-clamp.card-title{	
+    line-height: 1.5em;	
+	max-height: 1.7em; 
+	-webkit-line-clamp: 1;
+}
+
+.line-clamp.card-text{
+    line-height: 1.5em;	
+	max-height: 3.4em; 
+	-webkit-line-clamp: 2;
+}
+
+.line-clamp.product-name {	
+    font-size: .8rem;    
+    font-weight: 600;
+    line-height: 1rem;	
+	max-height: 1.2rem; 
+	-webkit-line-clamp: 1;
+}
+
+.line-clamp.product-description {	
+    font-size: .7rem;    
+    font-weight: 200;
+    line-height: 1.2em;	
+	max-height: 4em; 
+	-webkit-line-clamp: 2;
+}
+
+.product-item { 
+    color: #616161 !important;
+    text-decoration: none;
+} 
+
+.product-item:hover{     
+    text-decoration: none;
+} 
+
+.sale{
+    text-decoration: line-through;
+}
+
+.product-img{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+a, a:hover{
+    color: inherit;
+    text-decoration: none;
+}
+
+.base-card{
+    position: relative;
+}
+
+.base-card .card{
+    position: absolute;
+    top: 100px;
+}
+
+
+/* DETAIL PAGE */
+.app-detail{
+    width: 100%;
+    min-height: 100vh;
+    display: block;
+
+}
+
+.app-detail .app-detail__header{     
+    background: #fed541;
+    padding: 1rem;
+    height: 350px;
+    display: flex;
+    align-items: center;
+}
+
+.app-detail .app-detail__body{     
+    display: flex;
+    z-index: 10;
+    padding: 1rem;
+    position: relative;
+}
+
+.app-detail .app-detail__body .card{ 
+    margin-top: -3rem;
+}
+
+.galery-item img{   
+    width: 100%; 
+    height: 350px;
+    object-fit: cover !important;
+}
+
+.preloader{
+    width:100%;
+    min-height: 100vh;
+    display: block;
+    position: fixed;
+    top:0;
+    z-index: 100;
+    background: #fed541;
+    text-align: center;
+    padding-top: 50vh;
+}
+
+.spinner-border{
+    vertical-align: middle;
+}
